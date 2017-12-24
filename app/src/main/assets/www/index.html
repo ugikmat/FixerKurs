@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * &apos;unsafe-inline&apos; gap:; style-src &apos;self&apos; &apos;unsafe-inline&apos;; media-src *">
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+		<link rel="stylesheet" type="text/css" href="js/jquery-1.5.0.mobile.min.css">
+    <script type="text/javascript" src="js/money.js"></script>
+		<style>
+		/* For avoiding title truncation in wp8 */
+		.ui-header .ui-title {
+				overflow: visible !important;
+		}
+		/* For fixing the absolute position issue for the default cordova gen page*/
+		#cjp-accordion1 .app {
+				left: 5px !important;
+				margin: 5px !important;
+				position: relative !important;
+		}
+		</style>
+
+    <title>Konversi Mata Uang</title>
+</head>
+
+<body>
+		<div data-role="page" id="page1">
+			<div data-role="header"><h1>Kurs Mata Uang</h1></div>
+			<div data-role="content">Nilai Mata Uang Diberbagai Negara</div>
+
+      <input type="number" name="textFrom" id="textFrom" onkeyup="convert()">
+      <label for="from">From : </label>
+      <select name="from" id="from">
+        <option id="aud" selected="selected" value="AUD">AUSTRALIA DOLLAR</option>
+        <option id="eur" value="EUR">EURO</option>
+        <option id="bgn" value="BGN">BULGARIA Lev</option>
+        <option id="BRL" value="BRL">BRAZIL REAL</option>
+        <option id="CAD" value="CAD">CANADA DOLLAR</option>
+        <option id="CHF" value="CHF">Franc Swiss</option>
+        <option id="CNY" value="CNY">China Yen</option>
+        <option id="CZK" value="CZK">Koruna Cheko</option>
+        <option id="DKK" value="DKK">Krone Denmark</option>
+        <option id="gbp" value="GBP">British Poundserling</option>
+        <option id="HKD" value="HKD">Honkong Dollar</option>
+        <option id="HRK" value="HRK">Kuna Kroasia</option>
+        <option id="huf" value="HUF">Forint Hungaria</option>
+        <option id="idr" value="IDR">Indonesia Rupiah</option>
+        <option id="inr" value="INR">India Rupee</option>
+        <option id="jpy" value="JPY">Japan Yen</option>
+        <option id="krw" value="KRW">South Korea Won</option>
+        <option id="mxn" value="MXN">Mexican Peso</option>
+        <option id="myr" value="MYR">Malaysian Ringgit</option>
+        <option id="nok" value="NOK">Norwgian Crone</option>
+        <option id="nzd" value="NZD">New Zealand Dollar</option>
+        <option id="php" value="PHP">Philipine Peso</option>
+        <option id="pln" value="PLN">Polandian Zloty</option>
+        <option id="ron" value="RON">Romanian Leu</option>
+        <option id="rub" value="RUB">Russian Rubble</option>
+        <option id="sek" value="SEK">krona Swedia</option>
+        <option id="sgd" value="SGD">Singapura Dollar</option>
+        <option id="thb" value="THB">Thailand Baht</option>
+        <option id="try" value="TRY">Turkish Lira</option>
+        <option id="usd" value="USD">US Dollar</option>
+        <option id="zar" value="ZAR">South Afika Rand</option>
+      </select>
+
+      <label for="to">To : </label>
+      <select name="to" id="to">
+        <option id="aud" selected="selected" value="AUD">AUSTRALIA DOLLAR</option>
+        <option id="eur" value="EUR">EURO</option>
+        <option id="bgn" value="BGN">BULGARIA Lev</option>
+        <option id="brl" value="BRL">BRAZIL REAL</option>
+        <option id="cad" value="CAD">CANADA DOLLAR</option>
+        <option id="chf" value="CHF">Franc Swiss</option>
+        <option id="cny" value="CNY">China Yen</option>
+        <option id="czk" value="CZK">Koruna Cheko</option>
+        <option id="dkk" value="DKK">Krone Denmark</option>
+        <option id="gbp" value="GBP">British Poundserling</option>
+        <option id="hkd" value="HKD">Honkong Dollar</option>
+        <option id="hrk" value="HRK">Kuna Kroasia</option>
+        <option id="huf" value="HUF">Forint Hungaria</option>
+        <option id="idr" value="IDR">Indonesia Rupiah</option>
+        <option id="inr" value="INR">India Rupee</option>
+        <option id="jpy" value="JPY">Japan Yen</option>
+        <option id="krw" value="KRW">South Korea Won</option>
+        <option id="mxn" value="MXN">Mexican Peso</option>
+        <option id="myr" value="MYR">Malaysian Ringgit</option>
+        <option id="nok" value="NOK">Norwgian Crone</option>
+        <option id="nzd" value="NZD">New Zealand Dollar</option>
+        <option id="php" value="PHP">Philipine Peso</option>
+        <option id="pln" value="PLN">Polandian Zloty</option>
+        <option id="ron" value="RON">Romanian Leu</option>
+        <option id="rub" value="RUB">Russian Rubble</option>
+        <option id="sek" value="SEK">krona Swedia</option>
+        <option id="sgd" value="SGD">Singapura Dollar</option>
+        <option id="thb" value="THB">Thailand Baht</option>
+        <option id="try" value="TRY">Turkish Lira</option>
+        <option id="usd" value="USD">US Dollar</option>
+        <option id="zar" value="ZAR">South Afika Rand</option>
+      </select>
+
+      <input type="number" name="textTo" id="textTo">
+			<div data-role="footer" data-position="fixed">
+				<h4>By MUMS</h4>
+			</div>
+			<!-- end page 1 footer -->
+		</div>
+
+    <script type="text/javascript">
+      function convert(){
+        let kurs = () => {
+          // let rate = fx(908).from("GBP").to("USD")
+          // alert("£1 = $" + rate.toFixed(4))
+          var e = document.getElementById("from");
+          var sltFrom = e.value;
+          var f = document.getElementById("to");
+          var sltTo = f.value;
+          let conv =  fx($('#textFrom').val()).from(sltFrom).to(sltTo);
+          $('#textTo').val(conv.toFixed(4));
+        }
+
+        fetch('https://api.fixer.io/latest')
+          .then((resp) => resp.json())
+          .then((data) => fx.rates = data.rates)
+          .then(kurs)
+
+
+      }
+    </script>
+
+<script type="text/javascript" src="cordova.js"></script><script type="text/javascript" src="js/jquery-1.11.1.min.js" id="cordova-jquery"></script><script type="text/javascript" id="jqm-trans-disable">
+		/* For having a faster transition */
+		$(document).on("mobileinit", function() {
+				$.mobile.defaultPageTransition = "none";
+				$.mobile.defaultDialogTransition = "none";
+		});
+		</script><script type="text/javascript" src="js/jquery-1.5.0.mobile.min.js"></script><script type="text/javascript" src="js/index.js"></script><script type="text/javascript">
+        app.initialize();
+    </script></body>
+
+</html>
